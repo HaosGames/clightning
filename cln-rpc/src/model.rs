@@ -2455,29 +2455,29 @@ pub mod responses {
 	#[derive(Clone, Debug, Deserialize, Serialize)]
 	pub struct SetChannelResponse {
 		#[serde(alias = "channels")]
-		channels: Vec<SetChannelResponseChannels>,
+		pub channels: Vec<SetChannelResponseChannels>,
 	}
 
 	#[derive(Clone, Debug, Deserialize, Serialize)]
 	pub struct SetChannelResponseChannels {
 		#[serde(alias = "peer_id")]
-		peer_id: Pubkey,
+		pub peer_id: Pubkey,
 		#[serde(alias = "channel_id")]
-		channel_id: Sha256,
+		pub channel_id: Sha256,
 		#[serde(alias = "fee_base_msat")]
-		fee_base_msat: Amount,
+		pub fee_base_msat: Amount,
 		#[serde(alias = "fee_proportional_millionths")]
-		fee_proportional_millionths: u32,
+		pub fee_proportional_millionths: u32,
 		#[serde(alias = "minimum_htlc_out_msat")]
-		minimum_htlc_out_msat: Amount,
+		pub minimum_htlc_out_msat: Amount,
 		#[serde(alias = "maximum_htlc_out_msat")]
-		maximum_htlc_out_msat: Amount,
+		pub maximum_htlc_out_msat: Amount,
 		#[serde(alias = "short_channel_id", skip_serializing_if = "Option::is_none")]
-		short_channel_id: Option<ShortChannelId>,
+		pub short_channel_id: Option<ShortChannelId>,
 		#[serde(alias = "warning_htlcmin_too_low", skip_serializing_if = "Option::is_none")]
-		warning_htlcmin_too_low: Option<String>,
+		pub warning_htlcmin_too_low: Option<String>,
 		#[serde(alias = "warning_htlcmax_too_high", skip_serializing_if = "Option::is_none")]
-		warning_htlcmax_too_high: Option<String>,
+		pub warning_htlcmax_too_high: Option<String>,
 	}
 
 	#[derive(Clone, Debug, Deserialize, Serialize)]
