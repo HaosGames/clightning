@@ -48,6 +48,7 @@ pub enum Request {
 	KeySend(requests::KeysendRequest),
 	FundPsbt(requests::FundpsbtRequest),
 	SendPsbt(requests::SendpsbtRequest),
+	SetChannel(requests::SetChannelRequest),
 	SignPsbt(requests::SignpsbtRequest),
 	UtxoPsbt(requests::UtxopsbtRequest),
 	TxDiscard(requests::TxdiscardRequest),
@@ -100,6 +101,7 @@ pub enum Response {
 	KeySend(responses::KeysendResponse),
 	FundPsbt(responses::FundpsbtResponse),
 	SendPsbt(responses::SendpsbtResponse),
+	SetChannel(responses::SetChannelResponse),
 	SignPsbt(responses::SignpsbtResponse),
 	UtxoPsbt(responses::UtxopsbtResponse),
 	TxDiscard(responses::TxdiscardResponse),
@@ -613,6 +615,20 @@ pub mod requests {
 	    pub psbt: String,
 	    #[serde(alias = "reserve", skip_serializing_if = "Option::is_none")]
 	    pub reserve: Option<bool>,
+	}
+
+	#[derive(Clone, Debug, Deserialize, Serialize)]
+	pub struct SetChannelRequest {
+		#[serde(alias = "id")]
+		pub id: String,
+		#[serde(alias = "feebase", skip_serializing_if = "Option::is_none")]
+		pub feebase: Option<Amount>,
+		#[serde(alias = "feeppm", skip_serializing_if = "Option::is_none")]
+		pub feeppm: Option<u32>,
+		#[serde(alias = "htlcmin", skip_serializing_if = "Option::is_none")]
+		pub htlcmin_masat: Option<Amount>,
+		#[serde(alias = "htlcmax", skip_serializing_if = "Option::is_none")]
+		pub htlcmax_msat: Option<Amount>,
 	}
 
 	#[derive(Clone, Debug, Deserialize, Serialize)]
@@ -2434,6 +2450,34 @@ pub mod responses {
 	    pub tx: String,
 	    #[serde(alias = "txid")]
 	    pub txid: String,
+	}
+
+	#[derive(Clone, Debug, Deserialize, Serialize)]
+	pub struct SetChannelResponse {
+		#[serde(alias = "channels")]
+		channels: Vec<SetChannelResponseChannels>,
+	}
+
+	#[derive(Clone, Debug, Deserialize, Serialize)]
+	pub struct SetChannelResponseChannels {
+		#[serde(alias = "peer_id")]
+		peer_id: Pubkey,
+		#[serde(alias = "channel_id")]
+		channel_id: Sha256,
+		#[serde(alias = "fee_base_msat")]
+		fee_base_msat: Amount,
+		#[serde(alias = "fee_proportional_millionths")]
+		fee_proportional_millionths: u32,
+		#[serde(alias = "minimum_htlc_out_msat")]
+		minimum_htlc_out_msat: Amount,
+		#[serde(alias = "maximum_htlc_out_msat")]
+		maximum_htlc_out_msat: Amount,
+		#[serde(alias = "short_channel_id", skip_serializing_if = "Option::is_none")]
+		short_channel_id: Option<ShortChannelId>,
+		#[serde(alias = "warning_htlcmin_too_low", skip_serializing_if = "Option::is_none")]
+		warning_htlcmin_too_low: Option<String>,
+		#[serde(alias = "warning_htlcmax_too_high", skip_serializing_if = "Option::is_none")]
+		warning_htlcmax_too_high: Option<String>,
 	}
 
 	#[derive(Clone, Debug, Deserialize, Serialize)]
